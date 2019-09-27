@@ -1,4 +1,4 @@
-import { TILE_SIZE } from "./Constants.js";
+import { TILE_SIZE } from "./ConfigElements.js";
 
 /**
  * load an image from a url
@@ -24,11 +24,12 @@ export function loadImage(url) {
  * @param {Image} image 
  */
 export function makeTileLayer(image) {
+    let {value: tileSize} = TILE_SIZE;
     const buffer = document.createElement('canvas');
-    buffer.width = TILE_SIZE;
-    buffer.height = TILE_SIZE;
-    buffer.getContext('2d').drawImage(image, 0, 0, TILE_SIZE, TILE_SIZE);
+    buffer.width = tileSize;
+    buffer.height = tileSize;
+    buffer.getContext('2d').drawImage(image, 0, 0, tileSize, tileSize);
     return (context, i, j) => {
-        context.drawImage(buffer, i * TILE_SIZE, j * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        context.drawImage(buffer, i * tileSize, j * tileSize, tileSize, tileSize);
     }
 }

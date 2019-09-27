@@ -1,4 +1,4 @@
-import { TILE_SIZE } from "./Constants.js";
+import { TILE_SIZE } from "./ConfigElements.js";
 
 export default class MouseInput {
     constructor(canvas) {
@@ -17,8 +17,8 @@ export default class MouseInput {
     }
 
     clicked(x, y) {
-        x = Math.floor(x / TILE_SIZE);
-        y = Math.floor(y / TILE_SIZE);
+        x = Math.floor(x / TILE_SIZE.value);
+        y = Math.floor(y / TILE_SIZE.value);
         this._callback(x, y);
     }
 }

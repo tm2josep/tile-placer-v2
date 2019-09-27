@@ -29,9 +29,12 @@ export default class ImageManager extends Map {
             b.id = key;
             this.parent.appendChild(b);
 
-            this.parent.querySelectorAll('button').forEach((button) => {
+            let buttons = this.parent.querySelectorAll('button')
+            buttons.forEach((button) => {
                 button.addEventListener('click', () => {
                     this.selected = button.id;
+                    buttons.forEach(nb => nb.style = 'background-color: white');
+                    button.style = "background-color: grey"
                 })
             });
 

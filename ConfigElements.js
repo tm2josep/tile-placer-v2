@@ -1,0 +1,1 @@
+export let TILE_SIZE = document.getElementById('tileSize');

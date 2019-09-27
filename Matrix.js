@@ -1,10 +1,10 @@
+import { TILE_SIZE } from "./ConfigElements.js";
+
 export class Matrix {
     constructor(imageManager) {
         this.imageManager = imageManager;
         this.grid = [];
         this.defaultValue = 'Default';
-        this.viewHeight = 50;
-        this.viewWidth = 50;
         this.offset = { x: 0, y: 0 }
     }
 
@@ -58,8 +58,8 @@ export class Matrix {
      * @param {CanvasRenderingContext2D} context
      */
     draw(context) {
-        for (let x = 0; x < this.viewWidth; x++) {
-            for (let y = 0; y < this.viewHeight; y++) {
+        for (let x = 0; x < Math.ceil(500 / TILE_SIZE.value); x++) {
+            for (let y = 0; y < Math.ceil(500 / TILE_SIZE.value); y++) {
                 this.imageManager.draw(this.get(x, y), context, x, y)
             }
         }
@@ -71,6 +71,6 @@ export class Matrix {
         names.forEach(name => {
             o[name] = this.find(name).map(({ x, y }) => [x, y]);
         });
-        return JSON.stringify(o);
+        return o;
     }
 }
