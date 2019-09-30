@@ -1,8 +1,16 @@
 addEventListener('message', (e) => {
     let obj = e.data;
     let keys = Object.keys(obj);
+    let tileRanges = {};
     let downLoadingObj = {};
-    keys.forEach(key => downLoadingObj[key] = rangeOptimizer(obj[key]));
+    keys.forEach(key => tileRanges[key] = rangeOptimizer(obj[key]));
+    downLoadingObj.terrain = [];
+    keys.forEach(key => {
+        let range = {};
+        range.tile = key;
+        range.ranges = tileRanges[key];
+        downLoadingObj.terrain.push(range);
+    })
 
     let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(downLoadingObj));
 
@@ -33,7 +41,7 @@ function rangeOptimizer(coOrdinates) {
     }
 
     return rectangles.map(({ xStart, yStart, width, height }) => {
-        return [xStart, yStart, width, height];
+        return [xStart, yStart, xStart + width, yStart + height];
     });
 
 }

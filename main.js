@@ -12,14 +12,17 @@ let imageManager = new ImageManager(document.getElementById('selections'), (cont
     let { value: tileSize } = TILE_SIZE;
     context.clearRect(i * tileSize, j * tileSize, tileSize, tileSize);
 });
+
 const cells = new Matrix(imageManager);
-let mouseManager = new MouseInput(canvas);
+
 const keyManager = new KeyboardManager({
     'w': "UP",
     'a': "LEFT",
     's': "DOWN",
     'd': "RIGHT"
 }, cells);
+
+let mouseManager = new MouseInput(canvas);
 mouseManager.callback = (x, y) => {
     cells.set(imageManager.selected, x, y);
 }
@@ -39,16 +42,22 @@ function update(time) {
 requestAnimationFrame(update);
 
 document.getElementById('create').addEventListener('click', () => {
-    worker.postMessage(cells.stringify());
+    cells.trim.bind(cells)();
+    worker.postMessage(cells.stringify.bind(cells)());
 });
 
-let prog = document.getElementById('progress');
 worker.onmessage = ({ data: message }) => {
     if (message.type === 'download') {
         downloadNow(message.data);
     } if (message.type === 'progress') {
-        prog.innerHTML = message.data;
+        updateProgress(message.data);
     }
+}
+
+let prog = document.getElementById('progress');
+updateProgress(0);
+function updateProgress(progress) {
+    prog.innerHTML = (progress === `100%`) ? 'Complete!' : progress;
 }
 
 function downloadNow(dataStr) {

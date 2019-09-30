@@ -73,4 +73,25 @@ export class Matrix {
         });
         return o;
     }
+
+    trim() {
+        let firstNonDefaultColumnIndex = 0;
+
+        this.grid.some((column, colIndex) => {
+            if (column.every(cell => cell !== this.defaultValue)) {
+                firstNonDefaultColumnIndex = colIndex;
+                return true;
+            }
+
+            return false;
+        });
+
+        console.log(firstNonDefaultColumnIndex);
+
+        for (let i = 0; i < firstNonDefaultColumnIndex; i++) {
+            this.grid.shift();
+        }
+
+        return firstNonDefaultColumnIndex;
+    }
 }
