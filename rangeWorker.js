@@ -1,7 +1,18 @@
-export function rangeOptimizer(coOrdinates) {
-    let prog = document.getElementById('progress');
-    prog.innerHTML = `0%`;
+addEventListener('message', (e) => {
+    let obj = e.data;
+    let keys = Object.keys(obj);
+    let downLoadingObj = {};
+    keys.forEach(key => downLoadingObj[key] = rangeOptimizer(obj[key]));
+
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(downLoadingObj));
+
+    postMessage({ type: 'download', data: dataStr });
+});
+
+function rangeOptimizer(coOrdinates) {
+    postMessage({ type: 'progress', data: `0%` })
     // coordinates is an array of x, y length 2 arrays.
+
     let newCoords = [...coOrdinates];
     let rectangles = [];
     while (newCoords.length > 0) {
@@ -18,16 +29,16 @@ export function rangeOptimizer(coOrdinates) {
                 )
             }
         }
-        prog.innerHTML = `${100 - (newCoords.length / coOrdinates.length)}%`;
+        postMessage({ type: 'progress', data: `${100 - (newCoords.length / coOrdinates.length)}%` });
     }
 
-    return rectangles.map(({xStart, yStart, width, height}) => {
+    return rectangles.map(({ xStart, yStart, width, height }) => {
         return [xStart, yStart, width, height];
     });
 
 }
 
-export function getBiggestRectangle(coOrdinates) {
+function getBiggestRectangle(coOrdinates) {
     let maxSize = 0;
     let biggestRectangle = {};
     coOrdinates.forEach(position => {
@@ -42,7 +53,7 @@ export function getBiggestRectangle(coOrdinates) {
     return biggestRectangle;
 }
 
-export function findPossibleRectangle(position, coOrdinates) {
+function findPossibleRectangle(position, coOrdinates) {
     let width = 1;
     let height = 1;
 
@@ -61,7 +72,7 @@ export function findPossibleRectangle(position, coOrdinates) {
 
 }
 
-export function isARectangle(position, width, height, coOrdinates) {
+function isARectangle(position, width, height, coOrdinates) {
     for (let i = 0; i < width; i++) {
         for (let j = 0; j < height; j++) {
             // Search the filled positions to find if the position exists.
